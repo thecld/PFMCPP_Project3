@@ -57,31 +57,31 @@ Thing: Car Wash
  */
 
 /*
-Thing 1)
+Thing 1) compressor
 5 properties:
-    1)
-    2)
-    3)
-    4)
-    5)
+    1) threshold value
+    2) knee ratio
+    3) output gain
+    4) input gain
+    5) compression type
 3 things it can do:
-    1)
-    2)
-    3)
+    1) compress audio
+    2) make-up volume gain
+    3) saturate input
  */
 
 /*
-Thing 2)
+Thing 2) bakery
 5 properties:
-    1)
-    2)
-    3)
+    1) number of cookies
+    2) number of cakes
+    3) 
     4)
     5)
 3 things it can do:
-    1)
-    2)
-    3)
+    1) bake bread
+    2) sell cakes
+    3) 
  */
 
 /*
