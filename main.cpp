@@ -75,41 +75,41 @@ Thing 2) bakery
 5 properties:
     1) number of cookies
     2) number of cakes
-    3) 
-    4)
-    5)
+    3) number of breads
+    4) number of cash registers
+    5) number of ovens
 3 things it can do:
     1) bake bread
     2) sell cakes
-    3) 
+    3) smell great
  */
 
 /*
-Thing 3)
+Thing 3) aqua park
 5 properties:
-    1)
-    2)
-    3)
-    4)
-    5)
+    1) number of pools
+    2) number of saunas
+    3) number of water slides
+    4) number of people
+    5) ticket price
 3 things it can do:
-    1)
-    2)
-    3)
+    1) relax muscles
+    2) be fun
+    3) learning swimming
  */
 
 /*
-Thing 4)
+Thing 4) house
 5 properties:
-    1)
-    2)
-    3)
-    4)
-    5)
+    1) number of windows
+    2) number of doors
+    3) number of rooms
+    4) number of bathrooms
+    5) flooring
 3 things it can do:
-    1)
-    2)
-    3)
+    1) provide shelter
+    2) provide rest
+    3) get dirty
  */
 
 
