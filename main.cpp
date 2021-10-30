@@ -64,31 +64,15 @@ Part1 will be broken up into 5 separate steps
 3) Move the Thing 10 pseudo-code to after your Thing1-4 in the project.
 */
 
-/*
-Thing 10)
-5 properties:
-    1)
-    2)
-    3)
-    4)
-    5)
-3 things it can do:
-    1)
-    2)
-    3)
- */
-
-
-
 
 /*
 Thing 1) compressor
 5 properties:
-    1) threshold value
-    2) knee ratio
-    3) output gain
-    4) input gain
-    5) compression type
+    1) threshold value (doublee)
+    2) knee ratio (float)
+    3) output gain (float)
+    4) input gain (float)
+    5) compression type (int)
 3 things it can do:
     1) compress audio
     2) make-up volume gain
@@ -98,11 +82,11 @@ Thing 1) compressor
 /*
 Thing 2) bakery
 5 properties:
-    1) number of cookies
-    2) number of cakes
-    3) number of breads
-    4) number of cash registers
-    5) number of ovens
+    1) total amount of flour (double)
+    2) number of cakes (int)
+    3) number of breads (int)
+    4) amount of money in cash register (float)
+    5) max oven temperature (int)
 3 things it can do:
     1) bake bread
     2) sell cakes
@@ -112,11 +96,11 @@ Thing 2) bakery
 /*
 Thing 3) aqua park
 5 properties:
-    1) number of pools
-    2) number of saunas
-    3) number of water slides
-    4) number of people
-    5) ticket price
+    1) number of pools (int)
+    2) number of saunas (int)
+    3) total length of water slides (double)
+    4) opening hours (float)
+    5) ticket price (float)
 3 things it can do:
     1) relax muscles
     2) be fun
@@ -126,17 +110,30 @@ Thing 3) aqua park
 /*
 Thing 4) house
 5 properties:
-    1) number of windows
-    2) number of doors
-    3) number of rooms
-    4) number of bathrooms
-    5) flooring
+    1) number of windows (int)
+    2) size of living room (float)
+    3) room height (float)
+    4) number of bathrooms (int)
+    5) total floor size (float)
 3 things it can do:
     1) provide shelter
     2) provide rest
     3) get dirty
  */
 
+/*
+Thing 10) sampler
+5 properties:
+    1) vca (float)
+    2) filter (float)
+    3) envelope (float)
+    4) lfo (double)
+    5) waveform (double)
+3 things it can do:
+    1) loop sound
+    2) modulate filter
+    3) pitch down sample
+ */
 
 
 /*
