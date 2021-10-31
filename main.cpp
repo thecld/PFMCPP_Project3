@@ -80,84 +80,11 @@ Part1 will be broken up into 5 separate steps
 3) move Thing 5-9 to between your Thing 4 and Thing 10.
 */
 
-/*
-Thing 5)
-5 properties:
-    1)
-    2)
-    3)
-    4)
-    5)
-3 things it can do:
-    1)
-    2)
-    3)
- */
-
-/*
-Thing 6)
-5 properties:
-    1)
-    2)
-    3)
-    4)
-    5)
-3 things it can do:
-    1)
-    2)
-    3)
- */
-
-/*
-Thing 7)
-5 properties:
-    1)
-    2)
-    3)
-    4)
-    5)
-3 things it can do:
-    1)
-    2)
-    3)
- */
-
-/*
-Thing 8)
-5 properties:
-    1)
-    2)
-    3)
-    4)
-    5)
-3 things it can do:
-    1)
-    2)
-    3)
- */
-
-/*
-Thing 9)
-5 properties:
-    1)
-    2)
-    3)
-    4)
-    5)
-3 things it can do:
-    1)
-    2)
-    3)
- */
-
-
-
-
 
 /*
 Thing 1) compressor
 5 properties:
-    1) threshold value (doublee)
+    1) threshold value (double)
     2) knee ratio (float)
     3) output gain (float)
     4) input gain (float)
@@ -210,14 +137,84 @@ Thing 4) house
     3) get dirty
  */
 
+ /*
+Thing 5) vca
+5 properties:
+    1) minimum gain (double)
+    2) maximum gain (double)
+    3) initial gain (double)
+    4) modulation attenuator (float)
+    5) inputs (int)
+3 things it can do:
+    1) set inital gain
+    2) add rhythm to signal
+    3) silence the signal
+ */
+
+/*
+Thing 6) filter
+5 properties:
+    1) cutoff frequency
+    2) resonance
+    3) filter type
+    4) input gain
+    5) overdrive
+3 things it can do:
+    1) cut low frequencies
+    2) cut high frequencies
+    3) self-resonate
+ */
+
+/*
+Thing 7) envelope
+5 properties:
+    1) attack time (float)
+    2) decay time (float)
+    3) sustain level (double)
+    4) release time (float)
+    5) curve (float)
+3 things it can do:
+    1) create long sustained signals
+    2) create short staccato signals
+    3) loop over time
+ */
+
+/*
+Thing 8) lfo
+5 properties:
+    1) fade-in time (float)
+    2) frequency (double)
+    3) shape (int)
+    4) retrigger behaviour (int)
+    5) mono / poly switch (int)
+3 things it can do:
+    1) reset
+    2) modulate
+    3) change frequency
+ */
+
+/*
+Thing 9) waveform
+5 properties:
+    1) amplitude (float)
+    2) length in samples (int)
+    3) color (std::string)
+    4) height (int)
+    5) width (int)
+3 things it can do:
+    1) zoom in
+    2) zoom out
+    3) draw audio signal
+ */
+
 /*
 Thing 10) sampler
 5 properties:
-    1) vca (float)
-    2) filter (float)
-    3) envelope (float)
-    4) lfo (double)
-    5) waveform (double)
+    1) vca
+    2) filter
+    3) envelope
+    4) lfo
+    5) waveform
 3 things it can do:
     1) loop sound
     2) modulate filter
