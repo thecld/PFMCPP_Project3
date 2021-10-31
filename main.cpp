@@ -154,11 +154,11 @@ Thing 5) vca
 /*
 Thing 6) filter
 5 properties:
-    1) cutoff frequency
-    2) resonance
-    3) filter type
-    4) input gain
-    5) overdrive
+    1) cutoff frequency (float)
+    2) resonance (float)
+    3) filter type (std::string)
+    4) input gain (double)
+    5) overdrive (float)
 3 things it can do:
     1) cut low frequencies
     2) cut high frequencies
