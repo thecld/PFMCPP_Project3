@@ -151,6 +151,40 @@ Thing 1) compressor
     3) saturate input
  */
 
+struct Compressor
+{
+    //threshold value (double)
+    double threshold = -10.5;
+    //knee ratio (float)
+    float ratio = 4.5f;
+    //output gain (float)
+    float outputGain = -1.5f;
+    //input gain (float)
+    float inputGain = -11.0f;
+    //compression type (int)
+    int compType = 2;
+
+    struct Saturator
+    {
+        int satType = 0;
+        double gain = -10.5;
+        float inputFilter = 10000.0f;
+        float outputFilter = 1600.5f;
+        float mix = 77.7f;
+
+        void changeType(int satType);
+        bool checkClipping();
+        void oversample(bool oversampling);
+    };
+
+    //compress audio
+    void compress(double threshold, float ratio, int compType);
+    //make-up volume gain
+    void volumeMakeUp(float inputGain, float outputGain);
+    //saturate input
+    void saturateInput(Saturator sat);
+};
+
 /*
 Thing 2) bakery
 5 properties:
@@ -164,6 +198,42 @@ Thing 2) bakery
     2) sell cakes
     3) smell great
  */
+
+struct Bakery
+{
+    //total amount of flour (double)
+    double flourAmount = 25.7;
+    //number of cakes (int)
+    int numCake = 10;
+    //number of breads (int)
+    int numBread = 38;
+    //amount of money in cash register (float)
+    float numMoney = 8392.21f;
+    //max oven temperature (int)
+    int maxOvenTemp = 350;
+
+    struct RyeBread
+    {
+        int bakingTime = 45;
+        float bakingTemp = 350.0f;
+        float numPumpkinSeeds = 5.5f;
+        float numLinseed = 2.3f;
+        bool bioIngredients = 1;
+
+        void mixIngredients();
+        float getWeight(float flourUsed, float numPumpkinSeeds, float numLinseed);
+        bool burn(int bakingTime);
+    };
+
+    //bake bread
+    void bakeBread(double flourAmount, RyeBread brd);
+    //sell cakes
+    float cakeSell(std::string cakeName);
+    //smell great
+    void smellGreat();
+
+    RyeBread breadToSell;
+};
 
 /*
 Thing 3) aqua park
@@ -179,6 +249,27 @@ Thing 3) aqua park
     3) learning swimming
  */
 
+struct AquaPark
+{
+    //number of pools (int)
+    int numPools = 5;
+    //number of saunas (int)
+    int numSaunas = 3;
+    //total length of water slides (double)
+    float totalWaterSlidesLength = 121.56f;
+    //opening hours (float)
+    float openAt = 9.30f;
+    //ticket price (float)
+    float regularTicker = 13.21f;
+
+    //relax muscles
+    void relaxMuscles(bool goToSauna, int swimmingIntensity);
+    //be fun
+    void haveFun(float totalWaterSlidesLength, int numberOfSlides);
+    //learning swimming
+    bool learnToSwim(int age, int timeSpent);
+};
+
 /*
 Thing 4) house
 5 properties:
@@ -192,6 +283,27 @@ Thing 4) house
     2) provide rest
     3) get dirty
  */
+
+struct House
+{
+    //number of windows (int)
+    int numWindows = 8;
+    //size of living room (float)
+    float livingRoomSize = 31.8f;
+    //room height (float)
+    float roomHeight = 2.8f;
+    //number of bathrooms (int)
+    int numBathRooms = 3;
+    //total floor size (float)
+    float totalFloorSize = 155.2f;
+
+    //provide shelter
+    void provideShelter();
+    //provide rest
+    void provideRest(float sleepQuality);
+    //get dirty
+    bool getDirty(int numPeople, int numAnimals, float totalFloorSize);
+};
 
  /*
 Thing 5) vca
@@ -207,6 +319,27 @@ Thing 5) vca
     3) silence the signal
  */
 
+struct VCA
+{
+    //minimum gain (double)
+    double minGain = -100.66;
+    //maximum gain (double)
+    double maxGain = 10.5;
+    //initial gain (double)
+    double initGain = -20.1;
+    //modulation attenuator (float)
+    float modAtt = -56.2f;
+    //inputs (int)
+    int inputs = 2;
+
+    //set inital gain
+    float setInitGain(double minGain, double maxGain);
+    //add rhythm to signal
+    void modulateOutput(float modAtt, float modSpeed);
+    //silence the signal
+    void silenceOutput();
+};
+
 /*
 Thing 6) filter
 5 properties:
@@ -220,6 +353,27 @@ Thing 6) filter
     2) cut high frequencies
     3) self-resonate
  */
+
+struct Filter
+{
+    //1) cutoff frequency (float)
+    float cutoffFreq = 13200.2f;
+    //2) resonance (float)
+    float resonance = 0.77f;
+    //3) filter type (std::string)
+    std::string filterType = "Low Pass";
+    //4) input gain (double)
+    double inputGain = -5.3;
+    //5) overdrive (float)
+    float overdriveAmount = 1.7f;
+
+    //1) cut low frequencies
+    void cutLows(float cutoffFreq, float resonance);
+    //2) cut high frequencies
+    void cutHighs(float cutoffFreq, float resonance);
+    //3) self-resonate
+    bool selfResonate(float resonance, double inputGain);
+};
 
 /*
 Thing 7) envelope
@@ -235,6 +389,27 @@ Thing 7) envelope
     3) loop over time
  */
 
+struct Envelope
+{
+    //1) attack time (float)
+    float attackTime = 22.5f;
+    //2) decay time (float)
+    float decayTime = 330.2f;
+    //3) sustain level (double)
+    double sustainLevel = 0.99228;
+    //4) release time (float)
+    float releaseTime = 675.1f;
+    //5) curve (float)
+    float curve = 0.9f;
+
+    //1) create long sustained signals
+    void padPreset(float curve);
+    //2) create short staccato signals
+    void staccatoPreset(float curve);
+    //3) loop over time
+    bool loopOver(float attackTime, float decayTime, float releaseTime);
+};
+
 /*
 Thing 8) lfo
 5 properties:
@@ -242,12 +417,33 @@ Thing 8) lfo
     2) frequency (double)
     3) shape (int)
     4) retrigger behaviour (int)
-    5) mono / poly switch (int)
+    5) mono / poly switch (bool)
 3 things it can do:
     1) reset
     2) modulate
-    3) change frequency
+    3) change shape
  */
+
+struct LFO
+{
+    //1) fade-in time (float)
+    float fadeIn = 45.3f;
+    //2) frequency (double)
+    double freq = 0.074;
+    //3) shape (int)
+    int shape = 2;
+    //4) retrigger behaviour (int)
+    int retrig = 3;
+    //5) mono / poly switch (bool)
+    bool polyMode = false;
+
+    //1) reset
+    void resetState();
+    //2) modulate
+    void modulateFreq(double freq, float modFreq, float intensity);
+    //3) change shape
+    void changeSpeed(int shape);
+};
 
 /*
 Thing 9) waveform
@@ -263,6 +459,27 @@ Thing 9) waveform
     3) draw audio signal
  */
 
+struct Waveform
+{
+    //1) amplitude (float)
+    float amplitude = 0.89f;
+    //2) length in samples (int)
+    int lengthInSamples = 644112;
+    //3) color (std::string)
+    std::string waveColor = "Yellow";
+    //4) height (int)
+    int height = 220;
+    //5) width (int)
+    int width = 720;
+
+    //1) zoom in
+    void zoomIn(float zoomInAmount);
+    //2) zoom out
+    void zoomOut(float zoomOutAmount);
+    //3) draw audio signal
+    void drawWaveform(float amplitude, int lengthInSamples, int height, int width);
+};
+
 /*
 Thing 10) sampler
 5 properties:
@@ -276,6 +493,27 @@ Thing 10) sampler
     2) modulate filter
     3) pitch down sample
  */
+
+struct Sampler
+{
+    //1) vca
+    VCA vca;
+    //2) filter
+    Filter mainFilter;
+    //3) envelope
+    Envelope ampEnv;
+    //4) lfo
+    LFO lfo01;
+    //5) waveform
+    Waveform waveform;
+
+    //1) loop sound
+    void loopSound(std::string sampleName, bool loopForward);
+    //2) modulate filter
+    void modulateFilter(Filter filter, LFO lfo);
+    //3) pitch down sample
+    void pitchDown(std::string sampleName);
+};
 
 
 /*
