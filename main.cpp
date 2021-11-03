@@ -319,8 +319,8 @@ float Bakery::cakeSell(std::string cakeName)
         std::cout << "Product sold: " << cakeName << std::endl;
         return 9430.f;
     }
-    else
-        return 0.f;
+    
+    return 0.f;
 }
 
 void Bakery::smellGreat()
@@ -344,8 +344,10 @@ void AquaPark::relaxMuscles(bool goToSauna, int swimmingIntensity)
 {
     goToSauna = false;
     if (swimmingIntensity > 5)
+    {
         goToSauna = true;
         std::cout << "You should use one of the sauna's to relax your muscles!" << std::endl;
+    }
 }
 void AquaPark::haveFun(float aTotalWaterSlidesLength, int numberOfSlides)
 {
@@ -357,9 +359,8 @@ bool AquaPark::learnToSwim(int age, int timeSpent)
         return true;
     else if (age >= 10 && timeSpent > 120)
         return true;
-    else
-        return false;
 
+    return false;
 }
 
 struct House
@@ -391,8 +392,8 @@ bool House::getDirty(int numPeople, int numAnimals, float hTotalFloorSize)
 {
     if (hTotalFloorSize / (numPeople+numAnimals) > 20)
         return true;
-    else
-        return false;
+
+    return false;
 }
 
 struct VCA
@@ -447,10 +448,7 @@ void Filter::cutHighs(float fCutoffFreq, float fResonance)
 }
 bool Filter::selfResonate(float fResonance, double fInputGain)
 {
-    if (fResonance > 0.9f && fInputGain > -35.0)
-        return true;
-    else
-        return false;
+    return fResonance > 0.9f && fInputGain > -35.0;
 }
 
 struct Envelope
@@ -478,13 +476,13 @@ bool Envelope::loopOver(float eAttackTime, float eDecayTime, float eReleaseTime)
 {
     bool eSwitch = false;
 
-    if ((eAttackTime+eDecayTime+eReleaseTime) < 700.f)
+    if ((eAttackTime + eDecayTime + eReleaseTime) < 700.f)
     {
         eSwitch = true;
         return true;
     }
-    else
-        return false;
+
+    return false;
 }
 
 struct LFO
