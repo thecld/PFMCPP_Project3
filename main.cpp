@@ -249,28 +249,25 @@ struct Compressor
         void oversample(bool oversampling);
     };
 
-    void compress(double threshold, float ratio, int compType);
-    void volumeMakeUp(float inputGain, float outputGain);
+    void compress(double audioIn);
+    void volumeMakeUp();
     void saturateInput(Saturator sat);
 };
 
-void Compressor::compress(double cThreshold, float cRatio, int cCompType)
+void Compressor::compress(double audioIn)
 {
-    double audioIn = 0.0;
-
-    if (audioIn > cThreshold)
+    if (audioIn > threshold)
     {
-        if (cCompType == 0)
-            std::cout << "Compressing with ratio of: " << cRatio << " using Peak algorithm." << std::endl;
+        if (compType == 0)
+            std::cout << "Compressing with ratio of: " << ratio << " using Peak algorithm." << std::endl;
         else
-            std::cout << "Compressing with ratio of: " << cRatio << " using RMS algorithm." << std::endl;
+            std::cout << "Compressing with ratio of: " << ratio << " using RMS algorithm." << std::endl;
     }
 }
 
-void Compressor::volumeMakeUp(float cInputGain, float cOutputGain)
+void Compressor::volumeMakeUp()
 {
-    float difference = cInputGain - cOutputGain;
-
+    float difference = inputGain - outputGain;
     std::cout << "Adjusting the volume by " << difference << std::endl;
 }
 
@@ -300,16 +297,16 @@ struct Bakery
         bool burn(int bakingTime);
     };
 
-    void bakeBread(double bFlourAmount, RyeBread brd);
+    void bakeBread(RyeBread brd);
     float cakeSell(std::string cakeName);
     void smellGreat();
 
     RyeBread breadToSell;
 };
 
-void Bakery::bakeBread(double bFlourAmount, RyeBread brd)
+void Bakery::bakeBread(RyeBread brd)
 {
-    std::cout << "Flour used: " << bFlourAmount << std::endl << "Timer set to: " << brd.bakingTime << std::endl;
+    std::cout << "Flour used: " << flourAmount << std::endl << "Timer set to: " << brd.bakingTime << std::endl;
 }
 
 float Bakery::cakeSell(std::string cakeName)
@@ -335,23 +332,23 @@ struct AquaPark
     float openAt = 9.30f;
     float regularTicker = 13.21f;
 
-    void relaxMuscles(bool goToSauna, int swimmingIntensity);
-    void haveFun(float totalWaterSlidesLength, int numberOfSlides);
+    void relaxMuscles(int swimmingIntensity);
+    void haveFun(int numberOfSlides);
     bool learnToSwim(int age, int timeSpent);
 };
 
-void AquaPark::relaxMuscles(bool goToSauna, int swimmingIntensity)
+void AquaPark::relaxMuscles(int swimmingIntensity)
 {
-    goToSauna = false;
+    bool goToSauna = false;
     if (swimmingIntensity > 5)
     {
         goToSauna = true;
         std::cout << "You should use one of the sauna's to relax your muscles!" << std::endl;
     }
 }
-void AquaPark::haveFun(float aTotalWaterSlidesLength, int numberOfSlides)
+void AquaPark::haveFun(int numberOfSlides)
 {
-    std::cout << "Total length of our " << numberOfSlides << " slides is: " << aTotalWaterSlidesLength << " which means that it's not possible to NOT have fun!" << std::endl;
+    std::cout << "Total length of our " << numberOfSlides << " slides is: " << totalWaterSlidesLength << " which means that it's not possible to NOT have fun!" << std::endl;
 }
 bool AquaPark::learnToSwim(int age, int timeSpent)
 {
@@ -373,7 +370,7 @@ struct House
 
     void provideShelter();
     void provideRest(float sleepQuality);
-    bool getDirty(int numPeople, int numAnimals, float hTotalFloorSize);
+    bool getDirty(int numPeople, int numAnimals);
 };
 
 void House::provideShelter()
@@ -388,9 +385,9 @@ void House::provideRest(float sleepQuality)
         std::cout << "Sorry buddy, you'll be sleepy for the rest of the day." << std::endl;
 }
 
-bool House::getDirty(int numPeople, int numAnimals, float hTotalFloorSize)
+bool House::getDirty(int numPeople, int numAnimals)
 {
-    if (hTotalFloorSize / (numPeople+numAnimals) > 20)
+    if (totalFloorSize / (numPeople + numAnimals) > 20)
         return true;
 
     return false;
@@ -404,21 +401,21 @@ struct VCA
     float modAtt = -56.2f;
     int inputs = 2;
 
-    double setInitGain(double vMinGain, double vMaxGain);
-    void modulateOutput(float vModAtt, float modSpeed);
+    double setInitGain();
+    void modulateOutput(float modSpeed);
     void silenceOutput();
 };
 
-double VCA::setInitGain(double vMinGain, double vMaxGain)
+double VCA::setInitGain()
 {
-    std::cout << "Setting init gain. Current minimum is: " << vMinGain << " and maximum is: " << vMaxGain << std::endl;
+    std::cout << "Setting init gain. Current minimum is: " << minGain << " and maximum is: " << maxGain << std::endl;
 
-    return (vMinGain-vMaxGain);
+    return (minGain-maxGain);
 }
 
-void VCA::modulateOutput(float vModAtt, float modSpeed)
+void VCA::modulateOutput(float modSpeed)
 {
-    std::cout << "Modulating output by: " << vModAtt << " with the frequency of: " << modSpeed << std::endl;
+    std::cout << "Modulating output by: " << modAtt << " with the frequency of: " << modSpeed << std::endl;
 }
 
 void VCA::silenceOutput()
@@ -433,22 +430,24 @@ struct Filter
     double inputGain = -5.3;
     float overdriveAmount = 1.7f;
 
-    void cutLows(float cutoffFreq, float resonance);
-    void cutHighs(float cutoffFreq, float resonance);
-    bool selfResonate(float fResonance, double fInputGain);
+    void cutLows();
+    void cutHighs();
+    bool selfResonate();
 };
 
-void Filter::cutLows(float fCutoffFreq, float fResonance)
+void Filter::cutLows()
 {
-    std::cout << "Cutting low frequencies below: " << fCutoffFreq << "with a Q of: " << fResonance << std::endl;
+    filterType = "High Pass";
+    std::cout << "Cutting low frequencies below: " << cutoffFreq << "with a Q of: " << resonance << std::endl;
 }
-void Filter::cutHighs(float fCutoffFreq, float fResonance)
+void Filter::cutHighs()
 {
-    std::cout << "Cutting high frequencies above: " << fCutoffFreq << "with a Q of: " << fResonance << std::endl;
+    filterType = "Low Pass";
+    std::cout << "Cutting high frequencies above: " << cutoffFreq << "with a Q of: " << resonance << std::endl;
 }
-bool Filter::selfResonate(float fResonance, double fInputGain)
+bool Filter::selfResonate()
 {
-    return fResonance > 0.9f && fInputGain > -35.0;
+    return resonance > 0.9f && inputGain > -35.0;
 }
 
 struct Envelope
@@ -459,24 +458,31 @@ struct Envelope
     float releaseTime = 675.1f;
     float curve = 0.9f;
 
-    void padPreset(float eCurve);
-    void staccatoPreset(float eCurve);
-    bool loopOver(float eAttackTime, float eDecayTime, float eReleaseTime);
+    void padPreset();
+    void staccatoPreset();
+    bool loopOver();
 };
 
-void Envelope::padPreset(float eCurve)
+void Envelope::padPreset()
 {
-    std::cout << "Setting envelope to slow setting, with curve of: " << eCurve << std::endl;
+    attackTime = 1500.f;
+    sustainLevel = 1.0;
+    releaseTime = 4500.f;
+    std::cout << "Setting envelope to slow setting, with curve of: " << curve << std::endl;
 }
-void Envelope::staccatoPreset(float eCurve)
+void Envelope::staccatoPreset()
 {
-    std::cout << "Setting envelope to fast setting, with curve of: " << eCurve << std::endl;
+    attackTime = 2.f;
+    decayTime = 300.f;
+    sustainLevel = 0.0;
+    releaseTime = 300.f;
+    std::cout << "Setting envelope to fast setting, with curve of: " << curve << std::endl;
 }
-bool Envelope::loopOver(float eAttackTime, float eDecayTime, float eReleaseTime)
+bool Envelope::loopOver()
 {
     bool eSwitch = false;
 
-    if ((eAttackTime + eDecayTime + eReleaseTime) < 700.f)
+    if ((attackTime + decayTime + releaseTime) < 700.f)
     {
         eSwitch = true;
         return true;
@@ -494,22 +500,22 @@ struct LFO
     bool polyMode = false;
 
     void resetState();
-    void modulateFreq(double lFreq, float modFreq, float intensity);
-    void changeSpeed(int lShape);
+    void modulateFreq(float modFreq, float intensity);
+    void changeSpeed();
 };
 
 void LFO::resetState()
 { 
 }
 
-void LFO::modulateFreq(double lFreq, float modFreq, float intensity)
+void LFO::modulateFreq(float modFreq, float intensity)
 {
-    std::cout << "LFO frequency set to: " << lFreq << std::endl << "Modulation speed set to: " << modFreq << std::endl << "Modulation intensity set to: " << intensity << std::endl;
+    std::cout << "LFO frequency set to: " << freq << std::endl << "Modulation speed set to: " << modFreq << std::endl << "Modulation intensity set to: " << intensity << std::endl;
 }
 
-void LFO::changeSpeed(int lShape)
+void LFO::changeSpeed()
 {
-    if (lShape == 0)
+    if (shape == 0)
         std::cout << "Changing sinusoid LFO frequency." << std::endl;
     else
         std::cout << "Changing triangle LFO frequency." << std::endl;
@@ -525,7 +531,7 @@ struct Waveform
 
     void zoomIn(float zoomInAmount);
     void zoomOut(float zoomOutAmount);
-    void drawWaveform(float wAmplitude, int wLengthInSamples, int wHeight, int wWidth);
+    void drawWaveform();
 };
 
 void Waveform::zoomIn(float zoomInAmount)
@@ -538,9 +544,9 @@ void Waveform::zoomOut(float zoomOutAmount)
     std::cout << "This " << waveColor << " waveform is too big! Commencing zoom out procedure by: " << zoomOutAmount << std::endl;
 }
 
-void Waveform::drawWaveform(float wAmplitude, int wLengthInSamples, int wHeight, int wWidth)
+void Waveform::drawWaveform()
 {
-    std::cout << "Drawing waveform in a rectangle of size: " << wHeight << " x " << wWidth << " with an amplitude of: " << wAmplitude << " and a total length of: " << wLengthInSamples << " samples." << std::endl;
+    std::cout << "Drawing waveform in a rectangle of size: " << height << " x " << width << " with an amplitude of: " << amplitude << " and a total length of: " << lengthInSamples << " samples." << std::endl;
 }
 
 struct Sampler
