@@ -458,19 +458,19 @@ struct Envelope
     float releaseTime = 675.1f;
     float curve = 0.9f;
 
-    void padPreset();
-    void staccatoPreset();
+    void setPadPreset();
+    void setStaccatoPreset();
     bool loopOver();
 };
 
-void Envelope::padPreset()
+void Envelope::setPadPreset()
 {
     attackTime = 1500.f;
     sustainLevel = 1.0;
     releaseTime = 4500.f;
     std::cout << "Setting envelope to slow setting, with curve of: " << curve << std::endl;
 }
-void Envelope::staccatoPreset()
+void Envelope::setStaccatoPreset()
 {
     attackTime = 2.f;
     decayTime = 300.f;
