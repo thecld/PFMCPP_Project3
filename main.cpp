@@ -108,7 +108,50 @@ struct CarWash
     You'll need to insert the Person struct from the video in the space below.
  */
 
+struct Person
+{
+    int age;
+    int height;
+    float hairLength;
+    float GPA;
+    unsigned int SATScore;
+    int distanceTravelled;
 
+    struct HumanFoot
+    {
+        float footSize = 28.5;
+
+        void stepForward()
+        {
+        }     
+
+        float stepSize()
+        {
+            return footSize*3.5f;
+        }
+    };
+
+    HumanFoot leftFoot;
+    HumanFoot rightFoot;
+
+    void run(int howFast, bool startWithLeftFoot);
+};
+
+void Person::run(int howFast, bool startWithLeftFoot)
+{
+    if (startWithLeftFoot)
+    {
+        leftFoot.stepForward();
+        rightFoot.stepForward();
+    } 
+    else
+    {
+        rightFoot.stepForward();
+        leftFoot.stepForward();
+    }
+    distanceTravelled += leftFoot.stepSize() + rightFoot.stepSize();
+    std::cout << "Person starts to run with a speed of: " << howFast << std::endl;
+}
 
 
 
@@ -185,33 +228,12 @@ struct CarWash //                                   1) define an empty struct fo
     Car carBeingServiced;  
 };
 
-
-
-/*
-Thing 1) compressor
-5 properties:
-    1) threshold value (double)
-    2) knee ratio (float)
-    3) output gain (float)
-    4) input gain (float)
-    5) compression type (int)
-3 things it can do:
-    1) compress audio
-    2) make-up volume gain
-    3) saturate input
- */
-
 struct Compressor
 {
-    //threshold value (double)
     double threshold = -10.5;
-    //knee ratio (float)
     float ratio = 4.5f;
-    //output gain (float)
     float outputGain = -1.5f;
-    //input gain (float)
     float inputGain = -11.0f;
-    //compression type (int)
     int compType = 2;
 
     struct Saturator
@@ -227,39 +249,39 @@ struct Compressor
         void oversample(bool oversampling);
     };
 
-    //compress audio
-    void compress(double threshold, float ratio, int compType);
-    //make-up volume gain
-    void volumeMakeUp(float inputGain, float outputGain);
-    //saturate input
+    void compress(double audioIn);
+    void volumeMakeUp();
     void saturateInput(Saturator sat);
 };
 
-/*
-Thing 2) bakery
-5 properties:
-    1) total amount of flour (double)
-    2) number of cakes (int)
-    3) number of breads (int)
-    4) amount of money in cash register (float)
-    5) max oven temperature (int)
-3 things it can do:
-    1) bake bread
-    2) sell cakes
-    3) smell great
- */
+void Compressor::compress(double audioIn)
+{
+    if (audioIn > threshold)
+    {
+        if (compType == 0)
+            std::cout << "Compressing with ratio of: " << ratio << " using Peak algorithm." << std::endl;
+        else
+            std::cout << "Compressing with ratio of: " << ratio << " using RMS algorithm." << std::endl;
+    }
+}
+
+void Compressor::volumeMakeUp()
+{
+    float difference = inputGain - outputGain;
+    std::cout << "Adjusting the volume by " << difference << std::endl;
+}
+
+void Compressor::saturateInput(Saturator sat)
+{
+    std::cout << "Saturation engaged! Saturator type: " << sat.satType << std::endl << "Mix parameter is set to: " << sat.mix << std::endl;
+}
 
 struct Bakery
 {
-    //total amount of flour (double)
     double flourAmount = 25.7;
-    //number of cakes (int)
     int numCake = 10;
-    //number of breads (int)
     int numBread = 38;
-    //amount of money in cash register (float)
     float numMoney = 8392.21f;
-    //max oven temperature (int)
     int maxOvenTemp = 350;
 
     struct RyeBread
@@ -275,295 +297,289 @@ struct Bakery
         bool burn(int bakingTime);
     };
 
-    //bake bread
-    void bakeBread(double flourAmount, RyeBread brd);
-    //sell cakes
+    void bakeBread(RyeBread brd);
     float cakeSell(std::string cakeName);
-    //smell great
     void smellGreat();
 
     RyeBread breadToSell;
 };
 
-/*
-Thing 3) aqua park
-5 properties:
-    1) number of pools (int)
-    2) number of saunas (int)
-    3) total length of water slides (double)
-    4) opening hours (float)
-    5) ticket price (float)
-3 things it can do:
-    1) relax muscles
-    2) be fun
-    3) learning swimming
- */
+void Bakery::bakeBread(RyeBread brd)
+{
+    std::cout << "Flour used: " << flourAmount << std::endl << "Timer set to: " << brd.bakingTime << std::endl;
+}
+
+float Bakery::cakeSell(std::string cakeName)
+{
+    if (cakeName == "Sweet Cake")
+    {
+        std::cout << "Product sold: " << cakeName << std::endl;
+        return 9430.f;
+    }
+    
+    return 0.f;
+}
+
+void Bakery::smellGreat()
+{
+}
 
 struct AquaPark
 {
-    //number of pools (int)
     int numPools = 5;
-    //number of saunas (int)
     int numSaunas = 3;
-    //total length of water slides (double)
     float totalWaterSlidesLength = 121.56f;
-    //opening hours (float)
     float openAt = 9.30f;
-    //ticket price (float)
     float regularTicker = 13.21f;
 
-    //relax muscles
-    void relaxMuscles(bool goToSauna, int swimmingIntensity);
-    //be fun
-    void haveFun(float totalWaterSlidesLength, int numberOfSlides);
-    //learning swimming
+    void relaxMuscles(int swimmingIntensity);
+    void haveFun(int numberOfSlides);
     bool learnToSwim(int age, int timeSpent);
 };
 
-/*
-Thing 4) house
-5 properties:
-    1) number of windows (int)
-    2) size of living room (float)
-    3) room height (float)
-    4) number of bathrooms (int)
-    5) total floor size (float)
-3 things it can do:
-    1) provide shelter
-    2) provide rest
-    3) get dirty
- */
+void AquaPark::relaxMuscles(int swimmingIntensity)
+{
+    bool goToSauna = false;
+    if (swimmingIntensity > 5)
+    {
+        goToSauna = true;
+        std::cout << "You should use one of the sauna's to relax your muscles!" << std::endl;
+    }
+}
+void AquaPark::haveFun(int numberOfSlides)
+{
+    std::cout << "Total length of our " << numberOfSlides << " slides is: " << totalWaterSlidesLength << " which means that it's not possible to NOT have fun!" << std::endl;
+}
+bool AquaPark::learnToSwim(int age, int timeSpent)
+{
+    if (age < 10 && timeSpent > 60)
+        return true;
+    else if (age >= 10 && timeSpent > 120)
+        return true;
+
+    return false;
+}
 
 struct House
 {
-    //number of windows (int)
     int numWindows = 8;
-    //size of living room (float)
     float livingRoomSize = 31.8f;
-    //room height (float)
     float roomHeight = 2.8f;
-    //number of bathrooms (int)
     int numBathRooms = 3;
-    //total floor size (float)
     float totalFloorSize = 155.2f;
 
-    //provide shelter
     void provideShelter();
-    //provide rest
     void provideRest(float sleepQuality);
-    //get dirty
-    bool getDirty(int numPeople, int numAnimals, float totalFloorSize);
+    bool getDirty(int numPeople, int numAnimals);
 };
 
- /*
-Thing 5) vca
-5 properties:
-    1) minimum gain (double)
-    2) maximum gain (double)
-    3) initial gain (double)
-    4) modulation attenuator (float)
-    5) inputs (int)
-3 things it can do:
-    1) set inital gain
-    2) add rhythm to signal
-    3) silence the signal
- */
+void House::provideShelter()
+{
+}
+
+void House::provideRest(float sleepQuality)
+{
+    if (sleepQuality > 3)
+        std::cout << "Conratulations, you managed to get rest!" << std::endl;
+    else
+        std::cout << "Sorry buddy, you'll be sleepy for the rest of the day." << std::endl;
+}
+
+bool House::getDirty(int numPeople, int numAnimals)
+{
+    if (totalFloorSize / (numPeople + numAnimals) > 20)
+        return true;
+
+    return false;
+}
 
 struct VCA
 {
-    //minimum gain (double)
     double minGain = -100.66;
-    //maximum gain (double)
     double maxGain = 10.5;
-    //initial gain (double)
     double initGain = -20.1;
-    //modulation attenuator (float)
     float modAtt = -56.2f;
-    //inputs (int)
     int inputs = 2;
 
-    //set inital gain
-    float setInitGain(double minGain, double maxGain);
-    //add rhythm to signal
-    void modulateOutput(float modAtt, float modSpeed);
-    //silence the signal
+    double setInitGain();
+    void modulateOutput(float modSpeed);
     void silenceOutput();
 };
 
-/*
-Thing 6) filter
-5 properties:
-    1) cutoff frequency (float)
-    2) resonance (float)
-    3) filter type (std::string)
-    4) input gain (double)
-    5) overdrive (float)
-3 things it can do:
-    1) cut low frequencies
-    2) cut high frequencies
-    3) self-resonate
- */
+double VCA::setInitGain()
+{
+    std::cout << "Setting init gain. Current minimum is: " << minGain << " and maximum is: " << maxGain << std::endl;
+
+    return (minGain-maxGain);
+}
+
+void VCA::modulateOutput(float modSpeed)
+{
+    std::cout << "Modulating output by: " << modAtt << " with the frequency of: " << modSpeed << std::endl;
+}
+
+void VCA::silenceOutput()
+{
+}
 
 struct Filter
 {
-    //1) cutoff frequency (float)
     float cutoffFreq = 13200.2f;
-    //2) resonance (float)
     float resonance = 0.77f;
-    //3) filter type (std::string)
     std::string filterType = "Low Pass";
-    //4) input gain (double)
     double inputGain = -5.3;
-    //5) overdrive (float)
     float overdriveAmount = 1.7f;
 
-    //1) cut low frequencies
-    void cutLows(float cutoffFreq, float resonance);
-    //2) cut high frequencies
-    void cutHighs(float cutoffFreq, float resonance);
-    //3) self-resonate
-    bool selfResonate(float resonance, double inputGain);
+    void cutLows();
+    void cutHighs();
+    bool selfResonate();
 };
 
-/*
-Thing 7) envelope
-5 properties:
-    1) attack time (float)
-    2) decay time (float)
-    3) sustain level (double)
-    4) release time (float)
-    5) curve (float)
-3 things it can do:
-    1) create long sustained signals
-    2) create short staccato signals
-    3) loop over time
- */
+void Filter::cutLows()
+{
+    filterType = "High Pass";
+    std::cout << "Cutting low frequencies below: " << cutoffFreq << "with a Q of: " << resonance << std::endl;
+}
+void Filter::cutHighs()
+{
+    filterType = "Low Pass";
+    std::cout << "Cutting high frequencies above: " << cutoffFreq << "with a Q of: " << resonance << std::endl;
+}
+bool Filter::selfResonate()
+{
+    return resonance > 0.9f && inputGain > -35.0;
+}
 
 struct Envelope
 {
-    //1) attack time (float)
     float attackTime = 22.5f;
-    //2) decay time (float)
     float decayTime = 330.2f;
-    //3) sustain level (double)
     double sustainLevel = 0.99228;
-    //4) release time (float)
     float releaseTime = 675.1f;
-    //5) curve (float)
     float curve = 0.9f;
 
-    //1) create long sustained signals
-    void padPreset(float curve);
-    //2) create short staccato signals
-    void staccatoPreset(float curve);
-    //3) loop over time
-    bool loopOver(float attackTime, float decayTime, float releaseTime);
+    void setPadPreset();
+    void setStaccatoPreset();
+    bool loopOver();
 };
 
-/*
-Thing 8) lfo
-5 properties:
-    1) fade-in time (float)
-    2) frequency (double)
-    3) shape (int)
-    4) retrigger behaviour (int)
-    5) mono / poly switch (bool)
-3 things it can do:
-    1) reset
-    2) modulate
-    3) change shape
- */
+void Envelope::setPadPreset()
+{
+    attackTime = 1500.f;
+    sustainLevel = 1.0;
+    releaseTime = 4500.f;
+    std::cout << "Setting envelope to slow setting, with curve of: " << curve << std::endl;
+}
+void Envelope::setStaccatoPreset()
+{
+    attackTime = 2.f;
+    decayTime = 300.f;
+    sustainLevel = 0.0;
+    releaseTime = 300.f;
+    std::cout << "Setting envelope to fast setting, with curve of: " << curve << std::endl;
+}
+bool Envelope::loopOver()
+{
+    bool eSwitch = false;
+
+    if ((attackTime + decayTime + releaseTime) < 700.f)
+    {
+        eSwitch = true;
+        return true;
+    }
+
+    return false;
+}
 
 struct LFO
 {
-    //1) fade-in time (float)
     float fadeIn = 45.3f;
-    //2) frequency (double)
     double freq = 0.074;
-    //3) shape (int)
     int shape = 2;
-    //4) retrigger behaviour (int)
     int retrig = 3;
-    //5) mono / poly switch (bool)
     bool polyMode = false;
 
-    //1) reset
     void resetState();
-    //2) modulate
-    void modulateFreq(double freq, float modFreq, float intensity);
-    //3) change shape
-    void changeSpeed(int shape);
+    void modulateFreq(float modFreq, float intensity);
+    void changeSpeed();
 };
 
-/*
-Thing 9) waveform
-5 properties:
-    1) amplitude (float)
-    2) length in samples (int)
-    3) color (std::string)
-    4) height (int)
-    5) width (int)
-3 things it can do:
-    1) zoom in
-    2) zoom out
-    3) draw audio signal
- */
+void LFO::resetState()
+{ 
+}
+
+void LFO::modulateFreq(float modFreq, float intensity)
+{
+    std::cout << "LFO frequency set to: " << freq << std::endl << "Modulation speed set to: " << modFreq << std::endl << "Modulation intensity set to: " << intensity << std::endl;
+}
+
+void LFO::changeSpeed()
+{
+    if (shape == 0)
+        std::cout << "Changing sinusoid LFO frequency." << std::endl;
+    else
+        std::cout << "Changing triangle LFO frequency." << std::endl;
+}
 
 struct Waveform
 {
-    //1) amplitude (float)
     float amplitude = 0.89f;
-    //2) length in samples (int)
     int lengthInSamples = 644112;
-    //3) color (std::string)
     std::string waveColor = "Yellow";
-    //4) height (int)
     int height = 220;
-    //5) width (int)
     int width = 720;
 
-    //1) zoom in
     void zoomIn(float zoomInAmount);
-    //2) zoom out
     void zoomOut(float zoomOutAmount);
-    //3) draw audio signal
-    void drawWaveform(float amplitude, int lengthInSamples, int height, int width);
+    void drawWaveform();
 };
 
-/*
-Thing 10) sampler
-5 properties:
-    1) vca
-    2) filter
-    3) envelope
-    4) lfo
-    5) waveform
-3 things it can do:
-    1) loop sound
-    2) modulate filter
-    3) pitch down sample
- */
+void Waveform::zoomIn(float zoomInAmount)
+{
+    std::cout << "This " << waveColor << " waveform needs some zooming! Commencing zoom in procedure by: " << zoomInAmount << std::endl;
+}
+
+void Waveform::zoomOut(float zoomOutAmount)
+{
+    std::cout << "This " << waveColor << " waveform is too big! Commencing zoom out procedure by: " << zoomOutAmount << std::endl;
+}
+
+void Waveform::drawWaveform()
+{
+    std::cout << "Drawing waveform in a rectangle of size: " << height << " x " << width << " with an amplitude of: " << amplitude << " and a total length of: " << lengthInSamples << " samples." << std::endl;
+}
 
 struct Sampler
 {
-    //1) vca
     VCA vca;
-    //2) filter
     Filter mainFilter;
-    //3) envelope
     Envelope ampEnv;
-    //4) lfo
     LFO lfo01;
-    //5) waveform
     Waveform waveform;
 
-    //1) loop sound
     void loopSound(std::string sampleName, bool loopForward);
-    //2) modulate filter
     void modulateFilter(Filter filter, LFO lfo);
-    //3) pitch down sample
     void pitchDown(std::string sampleName);
 };
+
+void Sampler::loopSound(std::string sampleName, bool loopForward)
+{
+    if (loopForward)
+        std::cout << "Loop mode ON, direction: FORWARD, sample name: " << sampleName << std::endl;
+    else
+        std::cout << "Loop mode ON, direction: BACKWARD, sample name: " << sampleName << std::endl;
+}
+
+void Sampler::modulateFilter(Filter filter, LFO lfo)
+{
+    std::cout << "Modulating filter, starting frequency: " << filter.cutoffFreq << std::endl << "Modulation speed is equal to: " << lfo.freq << " Hz" << std::endl;
+}
+
+void Sampler::pitchDown(std::string sampleName)
+{
+    std::cout << "Sample " << sampleName << " is pitched down." << std::endl;
+}
+
 
 
 /*
