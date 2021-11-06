@@ -73,6 +73,7 @@ int main()
 
 struct Compressor
 {
+    Compressor();
     double threshold = -10.5;
     float ratio = 4.5f;
     float outputGain = -1.5f;
@@ -81,6 +82,7 @@ struct Compressor
 
     struct Saturator
     {
+        Saturator();
         int satType = 0;
         double gain = -10.5;
         float inputFilter = 10000.0f;
@@ -95,7 +97,19 @@ struct Compressor
     void compress(double audioIn);
     void volumeMakeUp();
     void saturateInput(Saturator sat);
+
+    Saturator satA;
 };
+
+Compressor::Compressor()
+{
+    std::cout << "Compressor constructed." << "\n";
+}
+
+Compressor::Saturator::Saturator()
+{
+    std::cout << "Nested type Saturator constructed" << "\n";
+}
 
 void Compressor::compress(double audioIn)
 {
@@ -121,6 +135,7 @@ void Compressor::saturateInput(Saturator sat)
 
 struct Bakery
 {
+    Bakery();
     double flourAmount = 25.7;
     int numCake = 10;
     int numBread = 38;
@@ -129,6 +144,7 @@ struct Bakery
 
     struct RyeBread
     {
+        RyeBread();
         int bakingTime = 45;
         float bakingTemp = 350.0f;
         float numPumpkinSeeds = 5.5f;
@@ -147,6 +163,16 @@ struct Bakery
     RyeBread breadToSell;
 };
 
+Bakery::Bakery()
+{
+    std::cout << "Bakery constructed." << "\n";
+}
+
+Bakery::RyeBread::RyeBread()
+{
+    std::cout << "Nested type RyeBread constructed" << "\n";
+}
+
 void Bakery::bakeBread(RyeBread brd)
 {
     std::cout << "Flour used: " << flourAmount << std::endl << "Timer set to: " << brd.bakingTime << std::endl;
@@ -159,16 +185,19 @@ float Bakery::cakeSell(std::string cakeName)
         std::cout << "Product sold: " << cakeName << std::endl;
         return 9430.f;
     }
-    
+
+    std::cout << "Product unavailable" << std::endl;
     return 0.f;
 }
 
 void Bakery::smellGreat()
 {
+    std::cout << "Smelling great!" << std::endl;
 }
 
 struct AquaPark
 {
+    AquaPark();
     int numPools = 5;
     int numSaunas = 3;
     float totalWaterSlidesLength = 121.56f;
@@ -180,6 +209,11 @@ struct AquaPark
     bool learnToSwim(int age, int timeSpent);
 };
 
+AquaPark::AquaPark()
+{
+    std::cout << "AquaPark constructed." << "\n";
+}
+
 void AquaPark::relaxMuscles(int swimmingIntensity)
 {
     bool goToSauna = false;
@@ -188,23 +222,35 @@ void AquaPark::relaxMuscles(int swimmingIntensity)
         goToSauna = true;
         std::cout << "You should use one of the sauna's to relax your muscles!" << std::endl;
     }
+    else
+        std::cout << "Don't need to use a sauna." << std::endl;
 }
+
 void AquaPark::haveFun(int numberOfSlides)
 {
     std::cout << "Total length of our " << numberOfSlides << " slides is: " << totalWaterSlidesLength << " which means that it's not possible to NOT have fun!" << std::endl;
 }
+
 bool AquaPark::learnToSwim(int age, int timeSpent)
 {
     if (age < 10 && timeSpent > 60)
+    {
+        std::cout << "Learned how to swim!" << "\n";
         return true;
+    }
     else if (age >= 10 && timeSpent > 120)
+    {
+        std::cout << "Learned how to swim!" << "\n";
         return true;
+    }
 
+    std::cout << "Still can't swim..." << "\n";
     return false;
 }
 
 struct House
 {
+    House();
     int numWindows = 8;
     float livingRoomSize = 31.8f;
     float roomHeight = 2.8f;
@@ -216,8 +262,14 @@ struct House
     bool getDirty(int numPeople, int numAnimals);
 };
 
+House::House()
+{
+    std::cout << "House constructed." << "\n";
+}
+
 void House::provideShelter()
 {
+    std::cout << "Home sweet home!" << std::endl;
 }
 
 void House::provideRest(float sleepQuality)
@@ -230,14 +282,19 @@ void House::provideRest(float sleepQuality)
 
 bool House::getDirty(int numPeople, int numAnimals)
 {
-    if (totalFloorSize / (numPeople + numAnimals) > 20)
+    if (totalFloorSize / (numPeople + numAnimals) < (totalFloorSize * 0.4f))
+    {
+        std::cout << "House needs some cleaning!" << "\n";
         return true;
+    }
 
+    std::cout << "House is clean, sweet!" << "\n";
     return false;
 }
 
 struct VCA
 {
+    VCA();
     double minGain = -100.66;
     double maxGain = 10.5;
     double initGain = -20.1;
@@ -249,11 +306,17 @@ struct VCA
     void silenceOutput();
 };
 
+VCA::VCA()
+{
+    std::cout << "VCA constructed." << "\n";
+}
+
 double VCA::setInitGain()
 {
+    initGain = (minGain+maxGain);
     std::cout << "Setting init gain. Current minimum is: " << minGain << " and maximum is: " << maxGain << std::endl;
 
-    return (minGain-maxGain);
+    return initGain;
 }
 
 void VCA::modulateOutput(float modSpeed)
@@ -263,10 +326,12 @@ void VCA::modulateOutput(float modSpeed)
 
 void VCA::silenceOutput()
 {
+    std::cout << "Audio output silenced by VCA." << std::endl;
 }
 
 struct Filter
 {
+    Filter();
     float cutoffFreq = 13200.2f;
     float resonance = 0.77f;
     std::string filterType = "Low Pass";
@@ -278,16 +343,23 @@ struct Filter
     bool selfResonate();
 };
 
+Filter::Filter()
+{
+    std::cout << "Filter constructed." << "\n";
+}
+
 void Filter::cutLows()
 {
     filterType = "High Pass";
-    std::cout << "Cutting low frequencies below: " << cutoffFreq << "with a Q of: " << resonance << std::endl;
+    std::cout << "Cutting low frequencies below: " << cutoffFreq << " Hz, with a Q of: " << resonance << std::endl;
 }
+
 void Filter::cutHighs()
 {
     filterType = "Low Pass";
-    std::cout << "Cutting high frequencies above: " << cutoffFreq << "with a Q of: " << resonance << std::endl;
+    std::cout << "Cutting high frequencies above: " << cutoffFreq << " Hz, with a Q of: " << resonance << std::endl;
 }
+
 bool Filter::selfResonate()
 {
     return resonance > 0.9f && inputGain > -35.0;
@@ -295,6 +367,7 @@ bool Filter::selfResonate()
 
 struct Envelope
 {
+    Envelope();
     float attackTime = 22.5f;
     float decayTime = 330.2f;
     double sustainLevel = 0.99228;
@@ -306,6 +379,11 @@ struct Envelope
     bool loopOver();
 };
 
+Envelope::Envelope()
+{
+    std::cout << "Envelope constructed." << "\n";
+}
+
 void Envelope::setPadPreset()
 {
     attackTime = 1500.f;
@@ -313,6 +391,7 @@ void Envelope::setPadPreset()
     releaseTime = 4500.f;
     std::cout << "Setting envelope to slow setting, with curve of: " << curve << std::endl;
 }
+
 void Envelope::setStaccatoPreset()
 {
     attackTime = 2.f;
@@ -321,21 +400,25 @@ void Envelope::setStaccatoPreset()
     releaseTime = 300.f;
     std::cout << "Setting envelope to fast setting, with curve of: " << curve << std::endl;
 }
+
 bool Envelope::loopOver()
 {
     bool eSwitch = false;
 
     if ((attackTime + decayTime + releaseTime) < 700.f)
     {
+        std::cout << "Envelope loop is ON." << "\n";
         eSwitch = true;
         return true;
     }
 
+    std::cout << "Envelope loop is OFF." << "\n";
     return false;
 }
 
 struct LFO
 {
+    LFO();
     float fadeIn = 45.3f;
     double freq = 0.074;
     int shape = 2;
@@ -347,13 +430,19 @@ struct LFO
     void changeSpeed();
 };
 
+LFO::LFO()
+{
+    std::cout << "LFO constructed." << "\n";
+}
+
 void LFO::resetState()
-{ 
+{
+    std::cout << "LFO has been reset." << std::endl;
 }
 
 void LFO::modulateFreq(float modFreq, float intensity)
 {
-    std::cout << "LFO frequency set to: " << freq << std::endl << "Modulation speed set to: " << modFreq << std::endl << "Modulation intensity set to: " << intensity << std::endl;
+    std::cout << "LFO frequency set to: " << freq << " Hz" << std::endl << "Modulation speed set to: " << modFreq << " Hz" << std::endl << "Modulation intensity set to: " << intensity << std::endl;
 }
 
 void LFO::changeSpeed()
@@ -366,6 +455,7 @@ void LFO::changeSpeed()
 
 struct Waveform
 {
+    Waveform();
     float amplitude = 0.89f;
     int lengthInSamples = 644112;
     std::string waveColor = "Yellow";
@@ -376,6 +466,11 @@ struct Waveform
     void zoomOut(float zoomOutAmount);
     void drawWaveform();
 };
+
+Waveform::Waveform()
+{
+    std::cout << "Waveform constructed." << "\n";
+}
 
 void Waveform::zoomIn(float zoomInAmount)
 {
@@ -394,6 +489,7 @@ void Waveform::drawWaveform()
 
 struct Sampler
 {
+    Sampler();
     VCA vca;
     Filter mainFilter;
     Envelope ampEnv;
@@ -405,12 +501,17 @@ struct Sampler
     void pitchDown(std::string sampleName);
 };
 
+Sampler::Sampler()
+{
+    std::cout << "Sampler constructed." << "\n";
+}
+
 void Sampler::loopSound(std::string sampleName, bool loopForward)
 {
     if (loopForward)
         std::cout << "Loop mode ON, direction: FORWARD, sample name: " << sampleName << std::endl;
     else
-        std::cout << "Loop mode ON, direction: BACKWARD, sample name: " << sampleName << std::endl;
+        std::cout << "Loop mode ON, direction: BACKWARDS, sample name: " << sampleName << std::endl;
 }
 
 void Sampler::modulateFilter(Filter filter, LFO lfo)
@@ -443,7 +544,97 @@ void Sampler::pitchDown(std::string sampleName)
 int main()
 {
     Example::main();
+
+    Compressor compA;
+    Bakery bakedBakery;
+    AquaPark aquaPark;
+    House smallHouse;
+    House bigHouse;
+    VCA vcaA;
+    Filter mainFilter;
+    Envelope ampEnv;
+    LFO lfo01;
+    Waveform compactWaveform;
+    Sampler lofiSampler;
+
+    std::cout << "\n";
+
+    compA.compress(-4.56);
+    compA.volumeMakeUp();
+    compA.saturateInput(compA.satA);
     
+    std::cout << "\n";
+
+    bakedBakery.bakeBread(bakedBakery.breadToSell);
+    bakedBakery.cakeSell("That cake over there");
+    bakedBakery.smellGreat();
+
+    std::cout << "\n";
+
+    aquaPark.relaxMuscles(3);
+    aquaPark.haveFun(4);
+    aquaPark.learnToSwim(9, 359);
+
+    std::cout << "\n";
+
+    smallHouse.totalFloorSize = 80.2f;
+    smallHouse.provideShelter();
+    smallHouse.provideRest(3.58f);
+    smallHouse.getDirty(2, 0);
+
+    std::cout << "\n";
+
+    bigHouse.totalFloorSize = 280.5f;
+    bigHouse.provideShelter();
+    bigHouse.provideRest(4.58f);
+    bigHouse.getDirty(5, 2);
+
+    std::cout << "\n";
+
+    std::cout << "Initial gain value: " << vcaA.initGain << "\n";
+    vcaA.setInitGain();
+    vcaA.modulateOutput(1.5f);
+    vcaA.silenceOutput();
+    std::cout << "Initial gain value: " << vcaA.initGain << "\n";
+
+    std::cout << "\n";
+
+    mainFilter.cutoffFreq = 300.0f;
+    mainFilter.cutLows();
+    mainFilter.cutoffFreq = 13343.5f;
+    mainFilter.cutHighs();
+    mainFilter.selfResonate();
+    std::cout << "Is filter currently self resonating? " << (mainFilter.selfResonate() == true ? "Answer: YES" : "Answer: NO") << "\n";
+    mainFilter.resonance = 0.93f;
+    std::cout << "Changed resonance to 0.93, is it resonating now? " << (mainFilter.selfResonate() == true ? "Answer: YES" : "Answer: NO") << "\n";
+
+    std::cout << "\n";
+
+    ampEnv.setPadPreset();
+    ampEnv.setStaccatoPreset();
+    ampEnv.loopOver();
+
+    std::cout << "\n";
+
+    lfo01.resetState();
+    lfo01.modulateFreq(5.2f, 0.9f);
+    lfo01.changeSpeed();
+
+    std::cout << "\n";
+
+    compactWaveform.zoomIn(5.3f);
+    compactWaveform.waveColor = "Slate Grey";
+    compactWaveform.zoomOut(0.78f);
+    compactWaveform.drawWaveform();
+
+    std::cout << "\n";
+
+    lofiSampler.loopSound("violin_C3", false);
+    lofiSampler.modulateFilter(mainFilter, lfo01);
+    lofiSampler.pitchDown("piano_soft_c#2");
+    std::cout << "Lofi Sampler filter cutoff settings: " << lofiSampler.mainFilter.cutoffFreq << " Hz \n" << "Lofi sampler filter resonance: " << lofiSampler.mainFilter.resonance << "\n";
+
+    std::cout << "\n";
     
     std::cout << "good to go!" << std::endl;
 }
