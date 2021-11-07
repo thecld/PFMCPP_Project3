@@ -223,7 +223,9 @@ void AquaPark::relaxMuscles(int swimmingIntensity)
         std::cout << "You should use one of the sauna's to relax your muscles!" << std::endl;
     }
     else
+    {
         std::cout << "Don't need to use a sauna." << std::endl;
+    }
 }
 
 void AquaPark::haveFun(int numberOfSlides)
@@ -313,7 +315,7 @@ VCA::VCA()
 
 double VCA::setInitGain()
 {
-    initGain = (minGain+maxGain);
+    initGain = minGain + maxGain;
     std::cout << "Setting init gain. Current minimum is: " << minGain << " and maximum is: " << maxGain << std::endl;
 
     return initGain;
