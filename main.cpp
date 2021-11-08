@@ -42,10 +42,10 @@ int main()
 struct Compressor
 {
     Compressor();
-    double threshold = -10.5;
-    float ratio = 4.5f;
-    float outputGain = -1.5f;
-    float inputGain = -11.0f;
+    double threshold { -10.5 };
+    float ratio { 4.5f };
+    float outputGain { -1.5f };
+    float inputGain { -11.0f };
     int compType = 2;
 
     struct Saturator
@@ -84,9 +84,9 @@ void Compressor::compress(double audioIn)
     if (audioIn > threshold)
     {
         if (compType == 0)
-            std::cout << "Compressing with ratio of: " << ratio << " using Peak algorithm." << std::endl;
+            std::cout << "Compressing with ratio of: " << ratio << " using Peak algorithm." << std::endl << "Threshold is set to: " << threshold << std::endl << "Output gain is set to: " << outputGain << std::endl;
         else
-            std::cout << "Compressing with ratio of: " << ratio << " using RMS algorithm." << std::endl;
+            std::cout << "Compressing with ratio of: " << ratio << " using RMS algorithm." << std::endl << "Threshold is set to: " << threshold << std::endl << "Output gain is set to: " << outputGain << std::endl;
     }
 }
 
@@ -104,11 +104,11 @@ void Compressor::saturateInput(Saturator sat)
 struct Bakery
 {
     Bakery();
-    double flourAmount = 25.7;
-    int numCake = 10;
-    int numBread = 38;
-    float numMoney = 8392.21f;
-    int maxOvenTemp = 350;
+    double flourAmount;
+    int numCake;
+    int numBread;
+    float numMoney;
+    int maxOvenTemp;
 
     struct RyeBread
     {
@@ -131,7 +131,7 @@ struct Bakery
     RyeBread breadToSell;
 };
 
-Bakery::Bakery()
+Bakery::Bakery() : flourAmount(22.7), numCake(10), numBread(38), numMoney(8392.21f), maxOvenTemp(350)
 {
     std::cout << "Bakery constructed." << "\n";
 }
@@ -143,7 +143,7 @@ Bakery::RyeBread::RyeBread()
 
 void Bakery::bakeBread(RyeBread brd)
 {
-    std::cout << "Flour used: " << flourAmount << std::endl << "Timer set to: " << brd.bakingTime << std::endl;
+    std::cout << "Flour used: " << flourAmount << std::endl << "Timer set to: " << brd.bakingTime << std::endl << "Oven set to: " << maxOvenTemp << std::endl;
 }
 
 float Bakery::cakeSell(std::string cakeName)
@@ -221,18 +221,18 @@ bool AquaPark::learnToSwim(int age, int timeSpent)
 struct House
 {
     House();
-    int numWindows = 8;
-    float livingRoomSize = 31.8f;
-    float roomHeight = 2.8f;
-    int numBathRooms = 3;
-    float totalFloorSize = 155.2f;
+    int numWindows;
+    float livingRoomSize;
+    float roomHeight;
+    int numBathRooms;
+    float totalFloorSize;
 
     void provideShelter();
     void provideRest(float sleepQuality);
     bool getDirty(int numPeople, int numAnimals);
 };
 
-House::House()
+House::House() : numWindows(8), livingRoomSize(31.8f), roomHeight(2.8f), numBathRooms(3), totalFloorSize(155.2f)
 {
     std::cout << "House constructed." << "\n";
 }
@@ -254,11 +254,11 @@ bool House::getDirty(int numPeople, int numAnimals)
 {
     if (totalFloorSize / (numPeople + numAnimals) < (totalFloorSize * 0.4f))
     {
-        std::cout << "House needs some cleaning!" << "\n";
+        std::cout << "There's " << numPeople << " people and " << numAnimals << " animals living on " << totalFloorSize << " square meters. House needs some cleaning!" << "\n";
         return true;
     }
 
-    std::cout << "House is clean, sweet!" << "\n";
+    std::cout << "There's " << numPeople << " people and " << numAnimals << " animals living on " << totalFloorSize << " square meters. House is clean, sweet!" << "\n";
     return false;
 }
 
@@ -338,11 +338,11 @@ bool Filter::selfResonate()
 struct Envelope
 {
     Envelope();
-    float attackTime = 22.5f;
-    float decayTime = 330.2f;
-    double sustainLevel = 0.99228;
-    float releaseTime = 675.1f;
-    float curve = 0.9f;
+    float attackTime { 22.5f };
+    float decayTime { 330.2f };
+    double sustainLevel { 0.99228 };
+    float releaseTime { 675.1f };
+    float curve { 0.9f };
 
     void setPadPreset();
     void setStaccatoPreset();
@@ -377,12 +377,12 @@ bool Envelope::loopOver()
 
     if ((attackTime + decayTime + releaseTime) < 700.f)
     {
-        std::cout << "Envelope loop is ON." << "\n";
+        std::cout << "Total envelope time: " << attackTime + decayTime + releaseTime << " ms -> Envelope loop is ON." << "\n";
         eSwitch = true;
         return true;
     }
 
-    std::cout << "Envelope loop is OFF." << "\n";
+    std::cout << "Total envelope time: " << attackTime + decayTime + releaseTime << " ms -> Envelope loop is OFF." << "\n";
     return false;
 }
 
@@ -426,11 +426,11 @@ void LFO::changeSpeed()
 struct Waveform
 {
     Waveform();
-    float amplitude = 0.89f;
-    int lengthInSamples = 644112;
-    std::string waveColor = "Yellow";
-    int height = 220;
-    int width = 720;
+    float amplitude { 0.89f };
+    int lengthInSamples { 644112 };
+    std::string waveColor { "Yellow" };
+    int height { 220 };
+    int width { 720 };
 
     void zoomIn(float zoomInAmount);
     void zoomOut(float zoomOutAmount);
