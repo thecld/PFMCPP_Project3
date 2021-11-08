@@ -84,9 +84,9 @@ void Compressor::compress(double audioIn)
     if (audioIn > threshold)
     {
         if (compType == 0)
-            std::cout << "Compressing with ratio of: " << ratio << " using Peak algorithm." << std::endl;
+            std::cout << "Compressing with ratio of: " << ratio << " using Peak algorithm." << std::endl << "Threshold is set to: " << threshold << std::endl << "Output gain is set to: " << outputGain << std::endl;
         else
-            std::cout << "Compressing with ratio of: " << ratio << " using RMS algorithm." << std::endl;
+            std::cout << "Compressing with ratio of: " << ratio << " using RMS algorithm." << std::endl << "Threshold is set to: " << threshold << std::endl << "Output gain is set to: " << outputGain << std::endl;
     }
 }
 
@@ -143,7 +143,7 @@ Bakery::RyeBread::RyeBread()
 
 void Bakery::bakeBread(RyeBread brd)
 {
-    std::cout << "Flour used: " << flourAmount << std::endl << "Timer set to: " << brd.bakingTime << std::endl;
+    std::cout << "Flour used: " << flourAmount << std::endl << "Timer set to: " << brd.bakingTime << std::endl << "Oven set to: " << maxOvenTemp << std::endl;
 }
 
 float Bakery::cakeSell(std::string cakeName)
@@ -254,11 +254,11 @@ bool House::getDirty(int numPeople, int numAnimals)
 {
     if (totalFloorSize / (numPeople + numAnimals) < (totalFloorSize * 0.4f))
     {
-        std::cout << "House needs some cleaning!" << "\n";
+        std::cout << "There's " << numPeople << " people and " << numAnimals << " animals living on " << totalFloorSize << " square meters. House needs some cleaning!" << "\n";
         return true;
     }
 
-    std::cout << "House is clean, sweet!" << "\n";
+    std::cout << "There's " << numPeople << " people and " << numAnimals << " animals living on " << totalFloorSize << " square meters. House is clean, sweet!" << "\n";
     return false;
 }
 
@@ -377,12 +377,12 @@ bool Envelope::loopOver()
 
     if ((attackTime + decayTime + releaseTime) < 700.f)
     {
-        std::cout << "Envelope loop is ON." << "\n";
+        std::cout << "Total envelope time: " << attackTime + decayTime + releaseTime << " ms -> Envelope loop is ON." << "\n";
         eSwitch = true;
         return true;
     }
 
-    std::cout << "Envelope loop is OFF." << "\n";
+    std::cout << "Total envelope time: " << attackTime + decayTime + releaseTime << " ms -> Envelope loop is OFF." << "\n";
     return false;
 }
 
