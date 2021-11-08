@@ -42,10 +42,10 @@ int main()
 struct Compressor
 {
     Compressor();
-    double threshold = -10.5;
-    float ratio = 4.5f;
-    float outputGain = -1.5f;
-    float inputGain = -11.0f;
+    double threshold { -10.5 };
+    float ratio { 4.5f };
+    float outputGain { -1.5f };
+    float inputGain { -11.0f };
     int compType = 2;
 
     struct Saturator
@@ -104,11 +104,11 @@ void Compressor::saturateInput(Saturator sat)
 struct Bakery
 {
     Bakery();
-    double flourAmount = 25.7;
-    int numCake = 10;
-    int numBread = 38;
-    float numMoney = 8392.21f;
-    int maxOvenTemp = 350;
+    double flourAmount;
+    int numCake;
+    int numBread;
+    float numMoney;
+    int maxOvenTemp;
 
     struct RyeBread
     {
@@ -131,7 +131,7 @@ struct Bakery
     RyeBread breadToSell;
 };
 
-Bakery::Bakery()
+Bakery::Bakery() : flourAmount(22.7), numCake(10), numBread(38), numMoney(8392.21f), maxOvenTemp(350)
 {
     std::cout << "Bakery constructed." << "\n";
 }
@@ -221,18 +221,18 @@ bool AquaPark::learnToSwim(int age, int timeSpent)
 struct House
 {
     House();
-    int numWindows = 8;
-    float livingRoomSize = 31.8f;
-    float roomHeight = 2.8f;
-    int numBathRooms = 3;
-    float totalFloorSize = 155.2f;
+    int numWindows;
+    float livingRoomSize;
+    float roomHeight;
+    int numBathRooms;
+    float totalFloorSize;
 
     void provideShelter();
     void provideRest(float sleepQuality);
     bool getDirty(int numPeople, int numAnimals);
 };
 
-House::House()
+House::House() : numWindows(8), livingRoomSize(31.8f), roomHeight(2.8f), numBathRooms(3), totalFloorSize(155.2f)
 {
     std::cout << "House constructed." << "\n";
 }
@@ -338,11 +338,11 @@ bool Filter::selfResonate()
 struct Envelope
 {
     Envelope();
-    float attackTime = 22.5f;
-    float decayTime = 330.2f;
-    double sustainLevel = 0.99228;
-    float releaseTime = 675.1f;
-    float curve = 0.9f;
+    float attackTime { 22.5f };
+    float decayTime { 330.2f };
+    double sustainLevel { 0.99228 };
+    float releaseTime { 675.1f };
+    float curve { 0.9f };
 
     void setPadPreset();
     void setStaccatoPreset();
@@ -426,11 +426,11 @@ void LFO::changeSpeed()
 struct Waveform
 {
     Waveform();
-    float amplitude = 0.89f;
-    int lengthInSamples = 644112;
-    std::string waveColor = "Yellow";
-    int height = 220;
-    int width = 720;
+    float amplitude { 0.89f };
+    int lengthInSamples { 644112 };
+    std::string waveColor { "Yellow" };
+    int height { 220 };
+    int width { 720 };
 
     void zoomIn(float zoomInAmount);
     void zoomOut(float zoomOutAmount);
