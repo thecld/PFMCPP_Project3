@@ -29,6 +29,8 @@ Create a branch named Part5
  */
 
 #include <iostream>
+#include <cmath>
+
 namespace Example 
 {
 struct Bar 
@@ -95,6 +97,7 @@ struct Compressor
     void compress(double audioIn);
     void volumeMakeUp();
     void saturateInput(Saturator sat);
+    double rampThreshold(double desiredThreshold);
 
     Saturator satA;
 };
@@ -131,6 +134,34 @@ void Compressor::saturateInput(Saturator sat)
     std::cout << "Saturation engaged! Saturator type: " << sat.satType << std::endl << "Mix parameter is set to: " << sat.mix << std::endl;
 }
 
+double Compressor::rampThreshold(double desiredThreshold)
+{
+    if (desiredThreshold < threshold)
+    {
+        while (threshold > desiredThreshold)
+        {
+            if (threshold <= desiredThreshold)
+                return threshold;
+
+            threshold -= 0.1;
+            std::cout << "Desired threshold is smaller, ramping down threshold: " << threshold << "\n"; 
+        }
+    }
+    else
+    {
+        while (threshold < desiredThreshold)
+        {
+            if (threshold >= desiredThreshold)
+                return threshold;
+
+            threshold += 0.1;
+            std::cout << "Desired threshold is bigger, ramping up threshold: " << threshold << "\n";
+        }
+    }
+    std::cout << "Desired threshold is the same as initial threshold." << "\n";
+    return threshold;
+}
+
 struct Bakery
 {
     Bakery();
@@ -139,6 +170,7 @@ struct Bakery
     int numBread;
     float numMoney;
     int maxOvenTemp;
+    int minutesLeft;
 
     struct RyeBread
     {
@@ -157,11 +189,12 @@ struct Bakery
     void bakeBread(RyeBread brd);
     float cakeSell(std::string cakeName);
     void smellGreat();
+    int minuteTimer(int timeAmount);
 
     RyeBread breadToSell;
 };
 
-Bakery::Bakery() : flourAmount(22.7), numCake(10), numBread(38), numMoney(8392.21f), maxOvenTemp(350)
+Bakery::Bakery() : flourAmount(22.7), numCake(10), numBread(38), numMoney(8392.21f), maxOvenTemp(350), minutesLeft(0)
 {
     std::cout << "Bakery constructed." << "\n";
 }
@@ -193,6 +226,33 @@ void Bakery::smellGreat()
     std::cout << "Smelling great!" << std::endl;
 }
 
+int Bakery::minuteTimer(int timeAmount)
+{
+    minutesLeft = timeAmount;
+    while (minutesLeft >= 0)
+    {
+        if (minutesLeft > 1)
+        {
+            std::cout << "Baking, time left: " << minutesLeft << " minutes.\n";
+        }
+        else
+        {
+            if (minutesLeft > 0)
+            {
+                std::cout << "Baking, time left: " << minutesLeft << " minute.\n";
+            }
+            else
+            {
+                std::cout << "Time left: " << minutesLeft << " minutes. Baking completed.\n";
+                return minutesLeft;
+            }
+        }
+        --minutesLeft;        
+    }
+    std::cout << "Invalid input, please insert positive value. Setting timer to 0.\n";
+    return minutesLeft = 0;
+}
+
 struct AquaPark
 {
     AquaPark();
@@ -201,15 +261,37 @@ struct AquaPark
     float totalWaterSlidesLength = 121.56f;
     float openAt = 9.30f;
     float regularTicker = 13.21f;
+    int numCustomers = 0;
 
     void relaxMuscles(int swimmingIntensity);
     void haveFun(int numberOfSlides);
     bool learnToSwim(int age, int timeSpent);
+    int leavingCustomersCounter(int numCustomersStillInside);
 };
 
 AquaPark::AquaPark()
 {
     std::cout << "AquaPark constructed." << "\n";
+}
+
+int AquaPark::leavingCustomersCounter(int numCustomersStillInside)
+{
+    numCustomers = numCustomersStillInside;
+    while (numCustomers >= 0)
+    {
+        if (numCustomers == 0)
+        {
+            std::cout << "No one's left, let's close for today!\n";
+            return numCustomers;
+        }
+        else
+        {
+            std::cout << "Number of customers still inside: " << numCustomers << "\n";
+        }
+        --numCustomers;
+    }
+    std::cout << "You can't have negative number of customers inside, please enter correct value.\n";
+    return numCustomers = 0;
 }
 
 void AquaPark::relaxMuscles(int swimmingIntensity)
@@ -256,15 +338,44 @@ struct House
     float roomHeight;
     int numBathRooms;
     float totalFloorSize;
+    int roomsToClean;
 
     void provideShelter();
     void provideRest(float sleepQuality);
     bool getDirty(int numPeople, int numAnimals);
+    int cleaningProcedure(int numDirtyRooms, int secondsPerRoom);
 };
 
-House::House() : numWindows(8), livingRoomSize(31.8f), roomHeight(2.8f), numBathRooms(3), totalFloorSize(155.2f)
+House::House() : numWindows(8), livingRoomSize(31.8f), roomHeight(2.8f), numBathRooms(3), totalFloorSize(155.2f), roomsToClean(0)
 {
     std::cout << "House constructed." << "\n";
+}
+
+int House::cleaningProcedure(int numDirtyRooms, int secondsPerRoom)
+{
+    if (secondsPerRoom > -1)
+    {
+        int cleaningTimer;
+        roomsToClean = numDirtyRooms;
+        while (roomsToClean >= 0)
+        {
+            cleaningTimer = secondsPerRoom;
+            while (cleaningTimer > 0 && roomsToClean > 0)
+            {
+                std::cout << "Cleaning. Rooms left: " << roomsToClean << " | Time left: " << (roomsToClean*secondsPerRoom) - (secondsPerRoom-cleaningTimer) << "s. \n";
+                --cleaningTimer;
+            }
+            if (roomsToClean == 0)
+            {
+                std::cout << "Cleaning completed. There's " << roomsToClean << " rooms left to clean.\n";
+                return roomsToClean;
+            }
+            --roomsToClean;
+        }
+    }
+
+    std::cout << "Negative values aren't allowed. Please enter correct value.\n";
+    return roomsToClean = 0;
 }
 
 void House::provideShelter()
@@ -298,17 +409,37 @@ struct VCA
     double minGain = -100.66;
     double maxGain = 10.5;
     double initGain = -20.1;
+    double currentGain = initGain;
     float modAtt = -56.2f;
     int inputs = 2;
 
     double setInitGain();
     void modulateOutput(float modSpeed);
     void silenceOutput();
+    double updateCurrentGain();
 };
 
 VCA::VCA()
 {
     std::cout << "VCA constructed." << "\n";
+}
+
+double VCA::updateCurrentGain()
+{
+    currentGain = minGain;
+    double currentModPos = 0.0;
+
+    while (currentModPos <= 1.0)
+    {
+        currentModPos += 0.05;
+        currentGain = (maxGain - minGain) * currentModPos + minGain;
+        std::cout << "Current gain: " << currentGain << "\n";   
+
+        if (currentModPos >= 1.0)
+            return currentGain;
+        
+    }
+    return currentGain;
 }
 
 double VCA::setInitGain()
@@ -341,11 +472,39 @@ struct Filter
     void cutLows();
     void cutHighs();
     bool selfResonate();
+    void modulateCutoff(float modulationAmount);
 };
 
 Filter::Filter()
 {
     std::cout << "Filter constructed." << "\n";
+}
+
+void Filter::modulateCutoff(float modulationAmount)
+{
+    float currentModPos = -0.05f;
+    float startingCutoff = cutoffFreq;
+    bool modDirection = true, modActive = true;
+
+    while (modActive)
+    {
+        if (modDirection)
+        {
+            currentModPos += 0.05f;
+            if (currentModPos > 1.f)
+                modDirection = false;
+        }
+        else
+        {
+            if (currentModPos <= 0.05f)
+                modActive = false; 
+
+            currentModPos -= 0.05f;
+        }
+                
+        cutoffFreq = ((modulationAmount + startingCutoff) - startingCutoff) * currentModPos + startingCutoff;
+        std::cout << "Filter Cutoff " << cutoffFreq << " Hz\n";   
+    }
 }
 
 void Filter::cutLows()
@@ -373,15 +532,44 @@ struct Envelope
     double sustainLevel { 0.99228 };
     float releaseTime { 675.1f };
     float curve { 0.9f };
+    std::string envState { "Env inactive" };
 
     void setPadPreset();
     void setStaccatoPreset();
     bool loopOver();
+    void currentEnvState(float timeSinceStart);
 };
 
 Envelope::Envelope()
 {
     std::cout << "Envelope constructed." << "\n";
+}
+
+void Envelope::currentEnvState(float timeSinceStart)
+{
+    float totalEnvTime = attackTime + decayTime;
+    float i;
+
+    for (i = 0.f; i < timeSinceStart; i += 0.1f)
+    {
+        if (i < attackTime)
+        {
+            envState = "Attack stage";
+        }
+        else
+        {
+            if (i < totalEnvTime)
+            {
+                envState = "Decay stage";
+            }
+            else
+            {
+                envState = "Sustain stage";
+            }
+        }
+       std::cout << "Time passed: " << i << "ms | Current env state: " << envState << "\n";
+    }
+    std::cout << "Time passed: " << i << "ms | Function stopped at: " << envState << "\n";
 }
 
 void Envelope::setPadPreset()
@@ -428,11 +616,29 @@ struct LFO
     void resetState();
     void modulateFreq(float modFreq, float intensity);
     void changeSpeed();
+
+    double cycleCounter(int numSeconds);
 };
 
 LFO::LFO()
 {
     std::cout << "LFO constructed." << "\n";
+}
+
+double LFO::cycleCounter(int numSeconds)
+{
+    double cyclesPerSeconds = 1.0 / freq;
+    double cyclesPassed = 0.0;
+
+    std::cout << "LFOs cycles per second counter. Current LFO speed: " << freq << " Hz. Counter duration set to: " << numSeconds << " seconds\n";
+
+    for (int i = 0; i <= numSeconds; ++i)
+    {
+        cyclesPassed = i * cyclesPerSeconds;
+        std::cout << "Seconds passed: " << i << " LFO cycles passed: " << cyclesPassed << "\n";
+    }
+
+    return cyclesPassed;
 }
 
 void LFO::resetState()
@@ -461,15 +667,39 @@ struct Waveform
     std::string waveColor { "Yellow" };
     int height { 220 };
     int width { 720 };
+    int sampleRate { 44100 };
+    float samplesMs { 0.f };
 
     void zoomIn(float zoomInAmount);
     void zoomOut(float zoomOutAmount);
     void drawWaveform();
+    void samplesToMs(int messageInterval);
 };
 
 Waveform::Waveform()
 {
     std::cout << "Waveform constructed." << "\n";
+}
+
+void Waveform::samplesToMs(int messageInterval)
+{
+    if (messageInterval > 0)
+    {
+        samplesMs = float(lengthInSamples) / float(sampleRate);
+    
+        std::cout << "Length of the sample in samples = " << lengthInSamples << "\n";
+
+        for (int i = 0; i <= int(samplesMs); i += messageInterval)
+        {
+            std::cout << "Time passed: " << i << "ms. Time in samples: " << i * sampleRate << "\n";
+        }
+
+        std::cout << "Operation completed. Total length of the sample = " << samplesMs << "ms\n";
+    }
+    else
+    {
+        std::cout << "ERROR!\n";
+    }
 }
 
 void Waveform::zoomIn(float zoomInAmount)
@@ -495,15 +725,31 @@ struct Sampler
     Envelope ampEnv;
     LFO lfo01;
     Waveform waveform;
+    float loopCounter = 0.f;
 
     void loopSound(std::string sampleName, bool loopForward);
     void modulateFilter(Filter filter, LFO lfo);
     void pitchDown(std::string sampleName);
+    float countLoops(int msPlayingTime = 10);
 };
 
 Sampler::Sampler()
 {
     std::cout << "Sampler constructed." << "\n";
+}
+
+float Sampler::countLoops(int msPlayingTime)
+{
+    waveform.samplesMs = waveform.lengthInSamples / waveform.sampleRate;
+
+    for (float i = 0.f; i <= float(msPlayingTime); ++i)
+    {
+        std::cout << "LOOP COUNTER -> Time passed: " << i << "ms | Loops passed (floored): " << floor(double(i) / double(waveform.samplesMs)) << "\n";
+    }
+
+    std::cout << "If you play the sample for " << msPlayingTime << "ms. It'll loop " << float(msPlayingTime) / waveform.samplesMs << " times\n";
+
+    return float(msPlayingTime) / waveform.samplesMs;
 }
 
 void Sampler::loopSound(std::string sampleName, bool loopForward)
@@ -562,18 +808,22 @@ int main()
     compA.compress(-4.56);
     compA.volumeMakeUp();
     compA.saturateInput(compA.satA);
+    compA.rampThreshold(-7.0);
+    compA.rampThreshold(-1.3);
     
     std::cout << "\n";
 
     bakedBakery.bakeBread(bakedBakery.breadToSell);
     bakedBakery.cakeSell("That cake over there");
     bakedBakery.smellGreat();
+    bakedBakery.minuteTimer(13);
 
     std::cout << "\n";
 
     aquaPark.relaxMuscles(3);
     aquaPark.haveFun(4);
     aquaPark.learnToSwim(9, 359);
+    aquaPark.leavingCustomersCounter(16);
 
     std::cout << "\n";
 
@@ -581,6 +831,7 @@ int main()
     smallHouse.provideShelter();
     smallHouse.provideRest(3.58f);
     smallHouse.getDirty(2, 0);
+    smallHouse.cleaningProcedure(2,28);
 
     std::cout << "\n";
 
@@ -588,6 +839,7 @@ int main()
     bigHouse.provideShelter();
     bigHouse.provideRest(4.58f);
     bigHouse.getDirty(5, 2);
+    bigHouse.cleaningProcedure(3,9);
 
     std::cout << "\n";
 
@@ -595,13 +847,16 @@ int main()
     vcaA.setInitGain();
     vcaA.modulateOutput(1.5f);
     vcaA.silenceOutput();
+    vcaA.initGain = vcaA.updateCurrentGain();
     std::cout << "Initial gain value: " << vcaA.initGain << "\n";
 
     std::cout << "\n";
 
     mainFilter.cutoffFreq = 300.0f;
+    mainFilter.modulateCutoff(10000.f);
     mainFilter.cutLows();
     mainFilter.cutoffFreq = 13343.5f;
+    mainFilter.modulateCutoff(-3000.5f);
     mainFilter.cutHighs();
     mainFilter.selfResonate();
     std::cout << "Is filter currently self resonating? " << (mainFilter.selfResonate() == true ? "Answer: YES" : "Answer: NO") << "\n";
@@ -613,12 +868,14 @@ int main()
     ampEnv.setPadPreset();
     ampEnv.setStaccatoPreset();
     ampEnv.loopOver();
+    ampEnv.currentEnvState(10.5f);
 
     std::cout << "\n";
 
     lfo01.resetState();
     lfo01.modulateFreq(5.2f, 0.9f);
     lfo01.changeSpeed();
+    lfo01.cycleCounter(5);
 
     std::cout << "\n";
 
@@ -626,6 +883,7 @@ int main()
     compactWaveform.waveColor = "Slate Grey";
     compactWaveform.zoomOut(0.78f);
     compactWaveform.drawWaveform();
+    compactWaveform.samplesToMs(4);
 
     std::cout << "\n";
 
@@ -633,6 +891,7 @@ int main()
     lofiSampler.modulateFilter(mainFilter, lfo01);
     lofiSampler.pitchDown("piano_soft_c#2");
     std::cout << "Lofi Sampler filter cutoff settings: " << lofiSampler.mainFilter.cutoffFreq << " Hz \n" << "Lofi sampler filter resonance: " << lofiSampler.mainFilter.resonance << "\n";
+    lofiSampler.countLoops(40);
 
     std::cout << "\n";
     
